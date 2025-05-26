@@ -21,3 +21,13 @@ def generateCode():
 
 codigo_unico = generateCode()
 print(f"Código Único: {codigo_unico}")
+
+import requests
+
+url = "https://IAgro/devices/signal"
+dados = {
+    "code": codigo_unico
+}
+
+resposta = requests.post(url, json=dados)
+print(f"status_code: {resposta.status_code}")
