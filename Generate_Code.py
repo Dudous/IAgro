@@ -21,3 +21,4 @@ def generateCode():
 
 codigo_unico = generateCode()
 print(f"Código Único: {codigo_unico}")
+print(len(codigo_unico))
