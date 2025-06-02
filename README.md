@@ -1,1 +1,1 @@
-# IAagro - Inteligence that Cultivates the Future
+# IAagro - Intelligence that Cultivates the Future

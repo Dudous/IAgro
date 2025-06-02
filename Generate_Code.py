@@ -16,18 +16,19 @@ def criar_codigo_unico(mac_address):
 
 def generateCode():
     mac_address = get_mac_address()
-    print(f"MAC Address: {mac_address}")
-    return criar_codigo_unico(mac_address)
+    # print(f"MAC Address: {mac_address}")
+    return str(criar_codigo_unico(mac_address))
 
-codigo_unico = generateCode()
-print(f"Código Único: {codigo_unico}")
+# codigo_unico = generateCode()
+# print(f"Código Único: {codigo_unico}")
+# print(type(codigo_unico))
 
-import requests
+# import requests
 
-url = "https://IAgro/devices/signal"
-dados = {
-    "code": codigo_unico
-}
+# url = "https://IAgro/devices/signal"
+# dados = {
+#     "code": codigo_unico
+# }
 
-resposta = requests.post(url, json=dados)
-print(f"status_code: {resposta.status_code}")
+# resposta = requests.post(url, json=dados)
+# print(f"status_code: {resposta.status_code}")

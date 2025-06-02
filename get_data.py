@@ -1,60 +1,90 @@
-from tensorflow.keras import models
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-import cv2
-import argparse
+# from tensorflow.keras import models
+# from tensorflow.keras.applications.mobilenet_v2 import preprocess_input # já já tiro isso aqui
+from Generate_Code import generateCode
 import numpy as np
+import argparse
+import cv2
+from datetime import datetime
+import json
 
+classes = ['Healthy', 'Aphids', 'Target spot', 'Bacterial blight', 'Powdery mildew',]
+
+scan_body = {
+    "DeviceId": generateCode(),
+    "FieldId": "",
+    "CropDiseases": []
+}
 
 def main():
     parser = argparse.ArgumentParser()
-    # parser.add_argument("model", type=str, help="model.h5")
+    parser.add_argument("field", type=str, help="Guid off the field")
     parser.add_argument("--model", type=str, help="Name of the model.h5 in the model folder", default="image_classifier_model_v2")
     
-    args = parser.parse_args()
-
     global model_name
-     
-    model_name = args.model
+
+    args = parser.parse_args()
     
-    print(f"model: {model_name}")
+    model_name = args.model
+    field_id = args.field
+
+    scan_body["FieldId"] = field_id
 
 if __name__ == "__main__":
     main()
 
 model_path = f'./model/{model_name}.h5'
 
-model = models.load_model(model_path, custom_objects={'preprocess_input': preprocess_input, 'mse': 'mse'})
+# model = models.load_model(model_path, custom_objects={'preprocess_input': preprocess_input, 'mse': 'mse'})
 
-print(model.summary())
+# print(model.summary())
 
-cam = cv2.VideoCapture(0)
 
-if not cam.isOpened():
-    print("Erro ao abrir a câmera.")
-    exit()
+with open('data.json', 'r') as file:
 
-ret, frame = cam.read()
-if not ret:
-    print("Erro ao capturar a imagem.")
+    coords = json.load(file)
+
+    # LOOP PRINCIPAL
+    for result in coords.keys():
+
+        lat, long = result.split(',')
+
+        crop_disease = {
+            "Disease": coords[result],
+            "DetectedAt": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "LocationPoint": {
+                "Latitude": lat,
+                "Longitude": long
+            }
+        }
+
+        scan_body["CropDiseases"].append(crop_disease)
+
+scan_body = json.dumps(scan_body)
+
+print(scan_body)
+
 
 # frame = cv2.imread(r"D:\Main dataset\Main dataset\4-Powdery Mildew\2.jpg", cv2.IMREAD_COLOR)
 
-img = cv2.resize(frame, (224, 224))        
+# cam = cv2.VideoCapture(0)
 
-img = np.expand_dims(img, axis=0)
+# if not cam.isOpened():
+#     print("Erro ao abrir a câmera.")
+#     exit()
 
-prediction = model.predict(img)
+# ret, frame = cam.read()
 
-cam.release()
+# if not ret:
+#     print("Erro ao capturar a imagem.")
 
-predicted_class = np.argmax(prediction)
+# img = cv2.resize(frame, (224, 224))
 
-print(prediction)
+# img = np.expand_dims(img, axis=0)
 
-print(f'Classe prevista: {predicted_class}')
+# prediction = model.predict(img)
 
-cv2.imshow(str(predicted_class), frame)
+# predicted_class = np.argmax(prediction)
 
-cv2.waitKey(0)
+# print(prediction)
 
-cv2.destroyAllWindows()
+# cam.release()
