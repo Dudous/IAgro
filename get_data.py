@@ -1,24 +1,26 @@
-# from tensorflow.keras import models
+from tensorflow.keras import models
 # from tensorflow.keras.applications.mobilenet_v2 import preprocess_input # já já tiro isso aqui
-from Generate_Code import generateCode
+from generate_code import generateCode
 import numpy as np
 import argparse
 import cv2
 from datetime import datetime
 import json
+import time
 
-classes = ['Healthy', 'Aphids', 'Target spot', 'Bacterial blight', 'Powdery mildew',]
+classes = ['Healthy', 'Aphids', 'Target spot', 'Bacterial blight', 'Powdery mildew']
 
 scan_body = {
     "DeviceId": generateCode(),
     "FieldId": "",
-    "CropDiseases": []
+    "StartedAt": "",
+    "CropDiseasesFound": []
 }
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("field", type=str, help="Guid off the field")
-    parser.add_argument("--model", type=str, help="Name of the model.h5 in the model folder", default="image_classifier_model_v2")
+    parser.add_argument("--model", type=str, help="Name of the model.h5 in the model folder", default="model_v1")
     
     global model_name
 
@@ -26,45 +28,61 @@ def main():
     
     model_name = args.model
     field_id = args.field
+    startedAt = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     scan_body["FieldId"] = field_id
+    scan_body["StartedAt"] = startedAt
 
 if __name__ == "__main__":
     main()
 
 model_path = f'./model/{model_name}.h5'
 
-# model = models.load_model(model_path, custom_objects={'preprocess_input': preprocess_input, 'mse': 'mse'})
+model = models.load_model(model_path)
 
-# print(model.summary())
+print(model.summary())
 
 
-with open('data.json', 'r') as file:
+# with open('./scripts/data.json', 'r') as file:
 
-    coords = json.load(file)
+#     coords = json.load(file)
 
-    # LOOP PRINCIPAL
-    for result in coords.keys():
+#     for result in coords.keys():
 
-        lat, long = result.split(',')
+#         lat, long = result.split(',')
 
-        crop_disease = {
-            "Disease": coords[result],
-            "DetectedAt": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            "LocationPoint": {
-                "Latitude": lat,
-                "Longitude": long
-            }
-        }
+#         crop_disease = {
+#             "Disease": coords[result],
+#             "DetectedAt": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+#             "LocationPoint": {
+#                 "Latitude": lat, 
+#                 "Longitude": long
+#             }
+#         }
 
-        scan_body["CropDiseases"].append(crop_disease)
+#         scan_body["CropDiseasesFound"].append(crop_disease)
 
-scan_body = json.dumps(scan_body)
+# scan_body = json.dumps(scan_body)
 
-print(scan_body)
-
+# with open('test.json', 'w') as file:
+#     file.write(scan_body)
 
 # frame = cv2.imread(r"D:\Main dataset\Main dataset\4-Powdery Mildew\2.jpg", cv2.IMREAD_COLOR)
+
+cam = cv2.VideoCapture(0)
+
+ret, frame = cam.read()
+
+img = cv2.resize(frame, (224, 224))
+
+img = np.expand_dims(img, axis=0)
+
+prediction = model.predict(img)
+
+prediction = np.argmax(prediction)
+
+print(classes[prediction])
+
 
 # cam = cv2.VideoCapture(0)
 
@@ -72,19 +90,34 @@ print(scan_body)
 #     print("Erro ao abrir a câmera.")
 #     exit()
 
-# ret, frame = cam.read()
+# count = 1
 
-# if not ret:
-#     print("Erro ao capturar a imagem.")
+# while 1:
 
-# img = cv2.resize(frame, (224, 224))
+#     count += 1
 
-# img = np.expand_dims(img, axis=0)
+#     ret, frame = cam.read()
 
-# prediction = model.predict(img)
+#     if not ret:
+#         print("Erro ao capturar a imagem.")
 
-# predicted_class = np.argmax(prediction)
+#     img = cv2.resize(frame, (224, 224))
 
-# print(prediction)
+#     img = np.expand_dims(img, axis=0)
+
+#     prediction = model.predict(img)
+
+#     # predicted_class = np.argmax(prediction)
+#     cv2.putText(frame, str(count), (10, 100), cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 3, (0,0,0))
+
+#     cv2.imshow("Pressione 'Esc' para finalizar", frame)
+
+#     key = cv2.waitKey(1)
+
+#     if key == 27:  # Esc para sair
+#         break
+
+#     # print(prediction)
 
 # cam.release()
+# cv2.destroyAllWindows()

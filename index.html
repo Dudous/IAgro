@@ -1,0 +1,17 @@
+<button onclick="getLocation()">Enviar Localização</button>
+<script>
+function getLocation() {
+    navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position.coords.latitude)
+        console.log(position.coords.longitude)
+        fetch("http://127.0.0.1:5000/location", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            })
+        });
+    });
+}
+</script>

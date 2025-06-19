@@ -1,10 +1,11 @@
 {
-    "DeviceId": "1952c5db5cf409374196ad24abab224c5c660dc0772c9b2854e1d56649b005c7",
+    "DeviceId": "83c3da597ddac657cbe7cace491eb6ab3b73131cf0d7c6c6fa0b0c7ce04a9726",
     "FieldId": "a12",
-    "CropDiseases": [
+    "StartedAt": "11/06/2025 16:23:37",
+    "CropDiseasesFound": [
         {
             "Disease": "",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409759",
                 "Longitude": " -45.894021"
@@ -12,7 +13,7 @@
         },
         {
             "Disease": "Aphids",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409759",
                 "Longitude": " -45.894022"
@@ -20,7 +21,7 @@
         },
         {
             "Disease": "Aphids",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409759",
                 "Longitude": " -45.894023"
@@ -28,7 +29,7 @@
         },
         {
             "Disease": "Aphids",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409759",
                 "Longitude": " -45.894024"
@@ -36,7 +37,7 @@
         },
         {
             "Disease": "",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409759",
                 "Longitude": " -45.894025"
@@ -44,7 +45,7 @@
         },
         {
             "Disease": "",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409760",
                 "Longitude": " -45.894025"
@@ -52,7 +53,7 @@
         },
         {
             "Disease": "",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409761",
                 "Longitude": " -45.894025"
@@ -60,7 +61,7 @@
         },
         {
             "Disease": "",
-            "DetectedAt": "02/06/2025 20:13:42",
+            "DetectedAt": "11/06/2025 16:23:37",
             "LocationPoint": {
                 "Latitude": "-21.409762",
                 "Longitude": " -45.894025"
